@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Http\Requests\CheckOutRequest;
-use App\Mordels\Order;
-use App\Mordels\Payment;
+use App\Models\Order;
+use App\Models\Payment;
 use App\Mordels\productSize;
 use App\Repository\Eloquent\OrderDetailRepository;
 use App\Repository\Eloquent\OrderRepository;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\session;
 
 class CheckOutService
 {
@@ -54,23 +54,23 @@ class CheckOutService
         $response = Http::withHeaders([
             'token' => '33d38975-8f97-11ef-b065-1e41f6c66bec'
         ])->get('https://online-gateway.ghn.vn/shiip/public-api/master-data/province');
-        $citys = json_decorde($response->body(), true);
+        $citys = json_decode($response->body(), true);
 
         $response = Http::withHeaders([
             'token' => '33d38975-8f97-11ef-b065-1e41f6c66bec'
         ])->get('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', [
             'province_id' => $city,
         ]);
-        $districts = json_decorde($response->body(), true);
+        $districts = json_decode($response->body(), true);
 
         $response = Http::withHeaders([
             'token' => '33d38975-8f97-11ef-b065-1e41f6c66bec'
         ])->get('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward', [
             'district_id' => $district,
         ]);
-        $wards = json_decorde($response->body(), true);
+        $wards = json_decode($response->body(), true);
 
-        $payments = Payment::where('status', Payment::STATUS['active'])-> get();
+        $payments = Payment::where('status', Payment::STATUS['active'])->get();
 
         return [
             'citys' => $citys['data'],
@@ -311,11 +311,9 @@ class CheckOutService
         'requestType' => $requestType,
         'signature' => $signature);
 
-        $result = Http::acceptJson([
-            'application/json'
-        ])->post($endPoint, $data);
+        $result = Http::acceptJson(['application/json'])->post($endPoint, $data);
 
-        $jsonResult = json_decorde($result->body(), true);
+        $jsonResult = json_decode($result->body(), true);
         return redirect($jsonResult['payUrl']);
     }
 
@@ -357,12 +355,12 @@ class CheckOutService
         $hashdata = "";
         foreach ($inputData as $key => $value) {
             if ($i == 1) {
-                $hashdata .= '&' . urlencorde($key) . "=" . urlencorde($value);
+                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
             } else {
-                $hashdata .= urlencorde($key) . "=" . urlencorde($value);
+                $hashdata .= urlencode($key) . "=" . urlencode($value);
                 $i = 1;
             }
-            $query .= urlencorde($key) . "=" . urlencorde($value) . '&';
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
         }
 
         $vnp_Url = $vnp_Url . "?" . $query;

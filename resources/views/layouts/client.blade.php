@@ -21,7 +21,7 @@
           margin: unset;
           height: 260px;
       }
-  
+
       .thumbnail img{
           height: 100% !important;
           width: 100% !important;
@@ -31,6 +31,7 @@
           padding-top: 10px;
       }
   </style>
+
    <body id="home">
       <div class="wrapper">
          <div class="header">
@@ -39,7 +40,7 @@
                   <div class="col-md-2 col-sm-2">
                      <div class="logo">
                         <a href="{{ route('user.home') }}">
-                           <img src="{{ asset("asset/client/images/" . setting_website()->logo) }}" alt="FlatShop">
+                           <img src="{{ asset("asset/client/images/" . setting_website()->logo) }}" alt="zawnhieu">
                         </a>
                      </div>
                   </div>
@@ -56,29 +57,36 @@
                               </ul>
                            </div>
                            <div class="col-md-6">
-                              @if (Auth::check())
-                              <ul class="nav navbar-nav usermenu">
-                                 <li class="dropdown">
+                            @if (Auth::check())
+                            <ul class="nav navbar-nav usermenu">
+                                <li class="dropdown">
                                     <a href="#" class="dropdown-toggle profile" data-toggle="dropdown">
-                                       <img src="{{ asset('asset/client/images/loginbg.png') }}" alt="">
-                                       <span>{{ Auth::user()->name }}</span>
+                                        <img src="{{ asset('asset/client/images/bg.png') }}" alt="">
+                                        <span>{{ Auth::user()->name }}</span>
                                     </a>
                                     <div class="dropdown-menu">
-                                       <ul class="mega-menu-links">
-                                          <li><a href="{{ route('profile.index') }}">Thông tin cá nhân</a></li>
-                                          <li><a href="{{ route('order_history.index') }}">Lịch sử mua hàng</a></li>
-                                          <li><a href="{{ route('user.logout') }}">Đăng xuất</a></li>
-                                       </ul>
+                                        <ul class="mega-menu-links">
+                                            <li><a href="{{ route('profile.index') }}">Thông tin cá nhân</a></li>
+                                            <li><a href="{{ route('order_history.index') }}">Lịch sử mua hàng</a></li>
+                                            <li><a href="{{ route('user.logout') }}">Đăng xuất</a></li>
+                                        </ul>
                                     </div>
-                                 </li>
-                              </ul>
-                              @else
-                              <ul class="usermenu">
-                                 <li><a href="{{ route('user.login') }}" class="log">Đăng Nhập</a></li>
-                                 <li><a href="{{ route('user.register') }}" class="reg">Đăng Kí</a></li>
-                              </ul>
-                              @endif
-                           </div>
+                                </li>
+
+                                <!-- Kiểm tra vai trò của người dùng -->
+                                @if (Auth::user()->role && (Auth::user()->role->name == 'Quản trị viên' || Auth::user()->role->name == 'Nhân Viên'))
+                                    <li><a href="{{ route('admin.home') }}">Quản lý</a></li>  <!-- Sử dụng admin.home -->
+                                @endif
+                            </ul>
+                        @else
+                            <ul class="usermenu">
+                                <li><a href="{{ route('user.login') }}" class="log">Đăng Nhập</a></li>
+                                <li><a href="{{ route('user.register') }}" class="reg">Đăng Kí</a></li>
+                            </ul>
+                        @endif
+
+                        </div>
+
                         </div>
                      </div>
                      <div class="clearfix"></div>
@@ -119,6 +127,8 @@
                </div>
             </div>
          </div>
+
+         <hr>
          @yield('content-client')
          <div class="clearfix"></div>
          <div class="footer">

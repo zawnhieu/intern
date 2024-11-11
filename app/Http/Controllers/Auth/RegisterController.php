@@ -188,9 +188,7 @@ class RegisterController extends Controller
     public function store(UserRegisterRequest $request)
     {
         try {
-            // lấy tất cả dữ liệu từ phía người dùng gửi lên
             $data = $request->validated();
-            // lấy thông tin từ phía khách hàng để thêm vào vào csdl
             $userData = [
                 'name' => $data['name'],
                 'email' => $data['email'],
@@ -198,8 +196,6 @@ class RegisterController extends Controller
                 'phone_number' => $data['phone_number'],
                 'role_id' => Role::ROLE['user'],
             ];
-
-            // lấy thông tin địa chỉ từ phía khách hàng để thêm vào vào csdl
             $addressData = [
                 'city' => $data['city'],
                 'district' => $data['district'],

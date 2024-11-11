@@ -43,9 +43,9 @@ class VerifyUserRegister extends Notification
             . $notifiable->getKey()
             . '?token=' . $this->token;
         return (new MailMessage)
-                    ->subject('[FLATSHOP] XÁC NHẬN TÀI KHOẢN')
+                    ->subject('[ZawnHieu] XÁC NHẬN TÀI KHOẢN')
                     ->line('--------------------------------')
-                    ->line('Xin chào ' . $notifiable->name . ', chào mừng bạn đã đến với FLATSHOP')
+                    ->line('Xin chào ' . $notifiable->name . ', chào mừng bạn đã đến với ZawnHieu')
                     ->line('--------------------------------')
                     ->line('Để xác nhận tài khoản vui lòng bấm vào nút xác nhận dưới đây')
                     ->action('Xác Nhận', $verifyUrl);
